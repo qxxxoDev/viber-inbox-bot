@@ -1,0 +1,21 @@
+{
+  "name": "inbox-viber-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/main.js",
+    "watch": "nodemon src/main.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "imap": "^0.8.19",
+    "mailparser": "^3.3.0",
+    "ngrok": "^4.1.0",
+    "viber-bot": "^1.0.16",
+    "winston": "^3.3.3"
+  }
+}
