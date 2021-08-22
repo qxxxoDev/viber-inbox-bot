@@ -6,7 +6,10 @@ const createImap = ({ user, password, host }) => {
         password,
         host,
         port: 993,
-        tls: true
+        tls: true,
+        tlsOptions: {
+            rejectUnauthorized: false
+        }
     })
 }
 
