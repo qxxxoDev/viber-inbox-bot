@@ -1,5 +1,5 @@
 import Seq from 'sequelize'
-import  { DEBUG, DATABASE_URL } from './config.js'
+import  { DEBUG, DATABASE_URL } from '../config.js'
 
 const { Sequelize, DataTypes } = Seq
 
@@ -31,8 +31,6 @@ export const User = seq.define('User', {
         defaultValue: false
     }
 })
-
-await User.sync()
 
 const get = async key => await (await User.findByPk(1))?.getDataValue(key)
 

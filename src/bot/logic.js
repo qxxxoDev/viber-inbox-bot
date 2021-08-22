@@ -1,6 +1,6 @@
 import Viber from 'viber-bot'
 import { mailEmitter } from '../events/mail.js'
-import { getProfile, authorized, subscribed, setUser } from '../store.js'
+import { getProfile, authorized, subscribed, setUser } from '../database/store'
 import { SECRET_KEY } from '../config.js'
 
 const TextMessage = Viber.Message.Text
