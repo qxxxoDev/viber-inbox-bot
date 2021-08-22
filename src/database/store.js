@@ -1,5 +1,5 @@
-import Seq from 'sequelize'
-import  { DEBUG, DATABASE_URL } from '../config.js'
+const Seq = require('sequelize')
+const { DEBUG, DATABASE_URL } = require('../config.js')
 
 const { Sequelize, DataTypes } = Seq
 
@@ -8,13 +8,9 @@ const seq = DEBUG ? new Sequelize({
     storage: 'db.sqlite'
 }) : new Sequelize(DATABASE_URL)
 
-try {
-    await seq.authenticate()
-} catch (err) {
-    console.log(err)
-}
+seq.authenticate().then(() => console.log('Connected to the database!')).catch(err => console.log(err))
 
-export const User = seq.define('User', {
+const User = seq.define('User', {
     id: {
         primaryKey: true,
         type: DataTypes.INTEGER
@@ -34,19 +30,19 @@ export const User = seq.define('User', {
 
 const get = async key => await (await User.findByPk(1))?.getDataValue(key)
 
-export const getProfile = async () => {
+const getProfile = async () => {
     return JSON.parse(await get('profile') || '{"fail":true}')
 }
 
-export const authorized = async () => {
+const authorized = async () => {
     return await get('authorized')
 }
 
-export const subscribed = async () => {
+const subscribed = async () => {
     return await get('subscribed')
 }
 
-export const setUser = async ({profile, authorized = false, subscribed = false}) => {
+const setUser = async ({profile, authorized = false, subscribed = false}) => {
     const data = { profile: JSON.stringify(profile), authorized, subscribed }
     const user = await getProfile()
     
@@ -56,3 +52,5 @@ export const setUser = async ({profile, authorized = false, subscribed = false})
         await User.update(data, {where: {id: 1}})
     }
 }
+
+module.exports = { User, getProfile, authorized, subscribed, setUser }

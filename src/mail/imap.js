@@ -1,6 +1,6 @@
-import Imap from 'imap'
+const Imap = require('imap')
 
-export const createImap = ({ user, password, host }) => {
+const createImap = ({ user, password, host }) => {
     return new Imap({
         user,
         password,
@@ -12,3 +12,5 @@ export const createImap = ({ user, password, host }) => {
         }
     })
 }
+
+module.exports = { createImap }

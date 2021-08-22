@@ -1,9 +1,4 @@
-import winston from 'winston'
-
-// Destructure 'winston' package
-const { createLogger, transports } = winston
+const { createLogger, transports } = require('winston')
 
 // Create Logger
-const Logger = createLogger({ level: 'debug' }).add(new transports.Console)
-
-export default Logger
+module.exports = createLogger({ level: 'debug' }).add(new transports.Console)

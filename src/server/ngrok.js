@@ -1,7 +1,9 @@
-import ngrok from 'ngrok'
-import { _PORT } from './http.js'
+const ngrok = require('ngrok')
+const { _PORT } = require('./http.js')
 
 // Expose local server with ngrok
-export const exposeServer = async () => {
+const exposeServer = async () => {
     return await ngrok.connect(_PORT)
 }
+
+module.exports = { exposeServer }

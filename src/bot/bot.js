@@ -1,7 +1,7 @@
-import { Bot } from 'viber-bot'
-import Logger from '../logger.js'
-import { VIBER_BOT_TOKEN } from '../config.js'
-import useBotLogic from './logic.js'
+const { Bot } =  require('viber-bot')
+const Logger = require('../logger.js')
+const { VIBER_BOT_TOKEN } = require('../config.js')
+const useBotLogic = require('./logic.js')
 
 // Create viber-bot Bot instance
 const bot = new Bot(Logger, {
@@ -13,4 +13,4 @@ const bot = new Bot(Logger, {
 // Implement hook logic for a bot
 useBotLogic(bot)
 
-export default bot
+module.exports = bot

@@ -1,6 +1,8 @@
-import MailEmitter from 'events'
+const MailEmitter = require('events')
 
-export const mailEmitter = new MailEmitter
-export const emitMailReceivedEvent = mail => mailEmitter.emit('mail', mail)
+const mailEmitter = new MailEmitter
+const emitMailReceivedEvent = mail => mailEmitter.emit('mail', mail)
 
 mailEmitter.setMaxListeners(1)
+
+module.exports = { mailEmitter, emitMailReceivedEvent }

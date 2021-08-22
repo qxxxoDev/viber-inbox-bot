@@ -1,7 +1,7 @@
-import { simpleParser } from 'mailparser'
-import { emitMailReceivedEvent } from '../events/mail.js'
-import { createImap } from './imap.js'
-import { EMAIL, PASSWORD, IMAP_HOST } from '../config.js'
+const { simpleParser } = require('mailparser')
+const { emitMailReceivedEvent } = require('../events/mail.js')
+const { createImap } = require('./imap.js')
+const { EMAIL, PASSWORD, IMAP_HOST } = require('../config.js')
 
 
 const imap = createImap({
@@ -45,4 +45,6 @@ imap.once('end', function() {
   console.log('Connection ended');
 })
 
-export const connectToMailServer = () => imap.connect()
+const connectToMailServer = () => imap.connect()
+
+module.exports = { connectToMailServer }

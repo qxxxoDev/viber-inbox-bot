@@ -1,7 +1,7 @@
-import Viber from 'viber-bot'
-import { mailEmitter } from '../events/mail.js'
-import { getProfile, authorized, subscribed, setUser } from '../database/store'
-import { SECRET_KEY } from '../config.js'
+const Viber = require('viber-bot')
+const { mailEmitter } = require('../events/mail.js')
+const { getProfile, authorized, subscribed, setUser } = require('../database/store.js')
+const { SECRET_KEY } = require('../config.js')
 
 const TextMessage = Viber.Message.Text
 
@@ -102,4 +102,4 @@ const useBotLogic = async bot => {
     })
 }
 
-export default useBotLogic
+module.exports = useBotLogic
