@@ -10,5 +10,6 @@ export const createServer = (bot, WEBHOOK_URL) => {
     http.createServer(bot.middleware().listen(_PORT, () => {
         connectToMailServer()
         bot.setWebhook(WEBHOOK_URL)
+        console.log('Server started!')
     }))
 }
