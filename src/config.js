@@ -10,5 +10,6 @@ export const {
     EMAIL,
     PASSWORD,
     IMAP_HOST,
-    SECRET_KEY
+    SECRET_KEY,
+    DATABASE_URL
 } = process.env
