@@ -13,7 +13,8 @@ const imap = createImap({
 const openInbox = cb => imap.openBox('INBOX', true, cb)
 
 imap.once('ready', () => openInbox((err, box) => {
-    if (err) throw err
+    console.log('Imap is ready!')
+    if (err) console.log(err)
 
     imap.on('mail', count => {
 
