@@ -65,7 +65,7 @@ const useBotLogic = async bot => {
         try {
             const sub = await subscribed()
             if (sub && mail.subject.includes('UA')/*  && mail.from.value.address == 'notification@transporeon.com' */)
-            bot.sendMessage(await getProfile(), new TextMessage(mail.subject))
+            bot.sendMessage(await getProfile(), new TextMessage(`${mail.subject}\n\n${mail.text}`))
         } catch (e) {}
     })
 
