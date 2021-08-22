@@ -10,7 +10,8 @@ const createImap = ({ user, password, host }) => {
         tlsOptions: {
             rejectUnauthorized: false
         },
-        debug: console.log
+        debug: console.log,
+        authTimeout: 30000
     })
 }
 
