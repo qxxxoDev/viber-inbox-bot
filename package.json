@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "dotenv": "^10.0.0",
+    "googleapis": "^39.2.0",
     "imap": "^0.8.19",
     "mailparser": "^3.3.0",
     "ngrok": "^4.1.0",
