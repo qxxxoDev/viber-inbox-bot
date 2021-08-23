@@ -1,12 +1,19 @@
 const Seq = require('sequelize')
 const { DEBUG, DATABASE_URL } = require('../config.js')
+const parse = require('pg-connection-string')
 
 const { Sequelize, DataTypes } = Seq
 
 const seq = DEBUG ? new Sequelize({
     dialect: 'sqlite',
     storage: 'db.sqlite'
-}) : new Sequelize(DATABASE_URL, {ssl: true})
+}) : new Sequelize(DATABASE_URL, {
+    dialect: 'postgres',
+    ssl: true,
+    dialectOptions: {
+        ssl: true
+    }
+})
 
 seq.authenticate().then(() => console.log('Connected to the database!')).catch(err => console.log(err))
 
