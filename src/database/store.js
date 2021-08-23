@@ -6,7 +6,7 @@ const { Sequelize, DataTypes } = Seq
 const seq = DEBUG ? new Sequelize({
     dialect: 'sqlite',
     storage: 'db.sqlite'
-}) : new Sequelize(DATABASE_URL)
+}) : new Sequelize(DATABASE_URL, {ssl: true})
 
 seq.authenticate().then(() => console.log('Connected to the database!')).catch(err => console.log(err))
 
