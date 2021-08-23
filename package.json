@@ -6,13 +6,13 @@
   "scripts": {
     "start": "node src/main.js",
     "migrate": "node src/database/migrate.js",
+    "id": "node src/database/addId.js",
     "watch": "nodemon src/main.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^10.0.0",
-    "googleapis": "^39.2.0",
     "imap": "^0.8.19",
     "mailparser": "^3.3.0",
     "ngrok": "^4.1.0",

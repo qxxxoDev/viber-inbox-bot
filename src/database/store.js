@@ -11,30 +11,85 @@ const seq = DEBUG ? new Sequelize({
 seq.authenticate().then(() => console.log('Connected to the database!')).catch(err => console.log(err))
 
 const User = seq.define('User', {
-    id: {
-        primaryKey: true,
-        type: DataTypes.INTEGER
+    uid: {
+        type: DataTypes.STRING
     },
     profile: {
         type: DataTypes.TEXT
+    },
+    subscribed: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+    }
+})
+const AuthorizedId = seq.define('AuthorizedId', {
+    id: {
+        primaryKey: true,
+        autoIncrement: true,
+        type: DataTypes.INTEGER
+    },  
+    userId: {
+        type: DataTypes.STRING
     }
 })
 
-const get = async key => await (await User.findByPk(1))?.getDataValue(key)
+const getAuthorizedIds = async () => {
+    const ids = []
+    try {
+        const idModels = await AuthorizedId.findAll()
+        idModels.forEach(model => {
+            const id = model.getDataValue('userId')
+            ids.push(id)
+        })
+    } catch (e) {}
+    return ids
+}
 
-const getUser = async () => {
-    return JSON.parse(await get('profile') || '{"fail":true}')
+const get = async (uid, key) => await (await User.findOne({where: {uid}}))?.getDataValue(key)
+
+const getUser = async uid => {
+    return JSON.parse(await get(uid, 'profile') || '{"fail":true}')
+}
+
+const getAllAuthorizedUsers = async () => {
+    const users = []
+    try {
+        const authorizedIds = await getAuthorizedIds()
+        const userModels = await User.findAll()
+        userModels.forEach(model => {
+            const profile = JSON.parse(model.getDataValue('profile'))
+            if (authorizedIds.includes(profile.id)){
+                users.push(profile)
+            }
+        })
+    } catch (e) {}
+    return users
+}
+
+const subscribe = async (uid, status) => {
+    try {
+        await User.update({
+            subscribed: status
+        }, { where: { uid } })
+    } catch (e) {}
+}
+
+const checkSub = async uid => {
+    try {
+        const model = await User.findOne({ where: { uid } })
+        return !!model.getDataValue('subscribed')
+    } catch (e) {}
 }
 
 const setUser = async profile => {
-    const data = { profile: JSON.stringify(profile) }
-    const user = await getUser()
+    const data = { uid: profile.id, profile: JSON.stringify(profile) }
+    const user = await getUser(profile.id)
     
     if (user.fail){
         await User.create(data)
     } else {
-        await User.update(data, {where: {id: 1}})
+        await User.update(data, {where: {uid: profile.id}})
     }
 }
 
-module.exports = { User, getUser, setUser }
+module.exports = { User, AuthorizedId, getAllAuthorizedUsers, checkSub, setUser, subscribe, getAuthorizedIds }
