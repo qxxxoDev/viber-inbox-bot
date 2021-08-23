@@ -1,6 +1,5 @@
 const Seq = require('sequelize')
 const { DEBUG, DATABASE_URL } = require('../config.js')
-const parse = require('pg-connection-string')
 
 const { Sequelize, DataTypes } = Seq
 
@@ -11,7 +10,10 @@ const seq = DEBUG ? new Sequelize({
     dialect: 'postgres',
     ssl: true,
     dialectOptions: {
-        ssl: true
+        ssl: {
+            require: true,
+            rejectUnauthorized: false
+        }
     }
 })
 
