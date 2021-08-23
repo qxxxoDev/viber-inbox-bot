@@ -17,34 +17,18 @@ const User = seq.define('User', {
     },
     profile: {
         type: DataTypes.TEXT
-    },
-    subscribed: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false
-    },
-    authorized: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false
     }
 })
 
 const get = async key => await (await User.findByPk(1))?.getDataValue(key)
 
-const getProfile = async () => {
+const getUser = async () => {
     return JSON.parse(await get('profile') || '{"fail":true}')
 }
 
-const authorized = async () => {
-    return await get('authorized')
-}
-
-const subscribed = async () => {
-    return await get('subscribed')
-}
-
-const setUser = async ({profile, authorized = false, subscribed = false}) => {
-    const data = { profile: JSON.stringify(profile), authorized, subscribed }
-    const user = await getProfile()
+const setUser = async profile => {
+    const data = { profile: JSON.stringify(profile) }
+    const user = await getUser()
     
     if (user.fail){
         await User.create(data)
@@ -53,4 +37,4 @@ const setUser = async ({profile, authorized = false, subscribed = false}) => {
     }
 }
 
-module.exports = { User, getProfile, authorized, subscribed, setUser }
+module.exports = { User, getUser, setUser }
