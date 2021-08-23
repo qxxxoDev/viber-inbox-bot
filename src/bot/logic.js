@@ -72,6 +72,8 @@ const useBotLogic = async bot => {
         const authorizedIds = await getAuthorizedIds()
         const checkAuth = id => authorizedIds.includes(id)
 
+        console.log(authorizedIds)
+
         uid = userProfile.id
 
         if (!checkAuth(userProfile.id)){
