@@ -27,7 +27,7 @@ imap.once('ready', () => openInbox((err, box) => {
 
         f.on('message', msg => {
             msg.on('body', stream => {
-                simpleParser(stream, async (err, mail) => {
+                simpleParser(stream, (err, mail) => {
                     if (err) throw err
                     emitMailReceivedEvent(mail)
                 })

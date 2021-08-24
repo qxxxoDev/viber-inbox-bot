@@ -3,7 +3,9 @@ const { _PORT } = require('./http.js')
 
 // Expose local server with ngrok
 const exposeServer = async () => {
-    return await ngrok.connect(_PORT)
+    try {
+        return await ngrok.connect(_PORT)
+    } catch (e) {}
 }
 
 module.exports = { exposeServer }

@@ -61,35 +61,37 @@ let uid
 const onSubscribe = async res => {
     const msg = "Now you are subscribed!\nWait for bot to send your mails once you get them."
     res.send(new TextMessage(msg, ...useKeyboard(NO_KEYBOARD)))
-    if (uid) await subscribe(uid, true)
+    if (uid){
+        try {
+            await subscribe(uid, true)
+        } catch (e) {}
+    }
 }
 
-const useBotLogic = async bot => {
+const useBotLogic = bot => {
 
     bot.onConversationStarted(async (userProfile, isSubscribed, context, onFinish) => {
-        console.log(`\nUser ID: ${userProfile.id}\n`)
-        
-        const authorizedIds = await getAuthorizedIds()
-        const checkAuth = id => authorizedIds.includes(id)
-
-        console.log(authorizedIds)
-
-        uid = userProfile.id
-
-        if (!checkAuth(userProfile.id)){
-            const ERR_MESSAGE = new TextMessage(`Hi, ${userProfile.name}!\nYou are not authorized.\nYou can't use this bot for now.\n\nIf you are convinced that you should have access to this bot, ask for authorization`, ...useKeyboard(ASK_AUTH(userProfile.id)))
-            bot.sendMessage(userProfile, ERR_MESSAGE)
-            return false
-        }
-
         try {
-            await setUser(userProfile)
-        } catch (e) {}
+            console.log(`\nUser ID: ${userProfile.id}\n`)
         
-        if (!isSubscribed){
-            const START_MESSAGE = new TextMessage(`Hi, ${userProfile.name}!\nNice to meet you!`, ...useKeyboard(START_KEYBOARD))
-            bot.sendMessage(userProfile, START_MESSAGE)
-        }
+            const authorizedIds = await getAuthorizedIds()
+            const checkAuth = id => authorizedIds.includes(id)
+
+            uid = userProfile.id
+
+            if (!checkAuth(userProfile.id)){
+                const ERR_MESSAGE = new TextMessage(`Hi, ${userProfile.name}!\nYou are not authorized.\nYou can't use this bot for now.\n\nIf you are convinced that you should have access to this bot, ask for authorization`, ...useKeyboard(ASK_AUTH(userProfile.id)))
+                bot.sendMessage(userProfile, ERR_MESSAGE)
+                return false
+            }
+
+            await setUser(userProfile)
+            
+            if (!isSubscribed){
+                const START_MESSAGE = new TextMessage(`Hi, ${userProfile.name}!\nNice to meet you!`, ...useKeyboard(START_KEYBOARD))
+                bot.sendMessage(userProfile, START_MESSAGE)
+            }
+        } catch (e) {}
     })
     
     mailEmitter.on('mail', async mail => {
@@ -109,7 +111,11 @@ const useBotLogic = async bot => {
 
     bot.onTextMessage(/^START$/, (msg, res) => onSubscribe(res))
 
-    bot.onUnsubscribe(async uid => await subscribe(uid, false))
+    bot.onUnsubscribe(async uid => {
+        try {
+            await subscribe(uid, false)
+        } catch (e) {}
+    })
 }
 
 module.exports = useBotLogic
