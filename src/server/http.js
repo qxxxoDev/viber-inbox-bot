@@ -1,4 +1,4 @@
-const http = require('http')
+const app = require('express')()
 const { PORT } = require('../config.js')
 const { connectToMailServer } = require('../mail/client.js')
 
@@ -7,11 +7,18 @@ const _PORT = PORT || 8080
 
 // Create server helper function
 const createServer = (bot, WEBHOOK_URL) => {
-    http.createServer(bot.middleware().listen(_PORT, () => {
+    app.use('/viber/webhook', bot.middleware())
+
+    app.get('/', (req, res) => {
+        res.send('Keeping alive...')
+        console.log('Keeping alive...')
+    })
+
+    app.listen(_PORT, () => {
         connectToMailServer()
-        bot.setWebhook(WEBHOOK_URL)
+        bot.setWebhook(`${WEBHOOK_URL}/viber/webhook`)
         console.log('Server started!')
-    }))
+    })
 }
 
 module.exports = { _PORT, createServer }
