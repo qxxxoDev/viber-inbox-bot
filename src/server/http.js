@@ -14,4 +14,11 @@ const createServer = (bot, WEBHOOK_URL) => {
     }))
 }
 
+http.createServer((req, res) => {
+    res.writeHead(200, {'Content-Type': 'text/html'})
+    res.write('Keeping alive...')
+    console.log('Keeping alive...')
+    res.end()
+}).listen(5500, () => console.log('Keep alive server started on port 5500.'))
+
 module.exports = { _PORT, createServer }

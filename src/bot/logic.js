@@ -93,7 +93,7 @@ const useBotLogic = async bot => {
     })
     
     mailEmitter.on('mail', async mail => {
-        console.log('Mail event fired.')
+        console.log('New mail!')
         try {
             const users = await getAllAuthorizedUsers()
             if (mail.subject.includes('UA')/*  && mail.from.value.address == 'notification@transporeon.com' */)

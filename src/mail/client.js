@@ -43,7 +43,7 @@ imap.once('error', function(err) {
 })
 
 imap.once('end', function() {
-  console.log('Connection ended');
+  console.log('Imap connection ended');
 })
 
 const connectToMailServer = () => imap.connect()

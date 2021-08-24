@@ -9,8 +9,7 @@ const createImap = ({ user, password, host }) => {
         tls: true,
         tlsOptions: {
             rejectUnauthorized: false
-        },
-        debug: console.log
+        }
     })
 }
 
