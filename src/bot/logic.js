@@ -105,10 +105,9 @@ const useBotLogic = bot => {
                 const isSubscribed = await checkSub(user.id)
                 console.log('\n\n---- Is subscribed ----\n\n', isSubscribed)
                 if (isSubscribed){
-                    console.log('\n\n---- Sending message... ----\n\n')
                     console.log(user)
                     await bot.sendMessage(user, new TextMessage(`${mail.subject}\n\n${mail.text}`, ...useKeyboard(NO_KEYBOARD)))
-                    console.log('\n\n---- Mail sent! ----\n\n')
+                    console.log(`\n\n---- Mail sent! ----\n---- To: ${user.name}\n\n`)
                 }
             })
         } catch (e) {
