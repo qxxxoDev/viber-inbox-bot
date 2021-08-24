@@ -113,7 +113,7 @@ const useBotLogic = bot => {
         } catch (e) {}
     })
 
-    bot.onSubscribe(res => async (msg, res) => {
+    bot.onSubscribe(async res => {
         try {
             await onSubscribe(res)
         } catch (e) {}
