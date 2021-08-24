@@ -86,7 +86,7 @@ const useBotLogic = bot => {
             }
 
             await setUser(userProfile)
-            console.log(isSubscribed)
+
             if (!isSubscribed){
                 const START_MESSAGE = new TextMessage(`Hi, ${userProfile.name}!\nNice to meet you!`, ...useKeyboard(START_KEYBOARD))
                 bot.sendMessage(userProfile, START_MESSAGE)
@@ -102,6 +102,7 @@ const useBotLogic = bot => {
                 const isSubscribed = await checkSub(user.id)
                 if (isSubscribed){
                     bot.sendMessage(user, new TextMessage(`${mail.subject}\n\n${mail.text}`, ...useKeyboard(NO_KEYBOARD)))
+                    console.log('\n\n---- Mail sent! ----\n\n')
                 }
             })
         } catch (e) {}
