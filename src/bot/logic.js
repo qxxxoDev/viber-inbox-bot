@@ -89,19 +89,24 @@ const useBotLogic = bot => {
 
             if (!isSubscribed){
                 const START_MESSAGE = new TextMessage(`Hi, ${userProfile.name}!\nNice to meet you!`, ...useKeyboard(START_KEYBOARD))
-                bot.sendMessage(userProfile, START_MESSAGE)
+                try {
+                    await bot.sendMessage(userProfile, START_MESSAGE)
+                } catch (e) {}
             }
         } catch (e) {}
     })
     
     mailEmitter.on('mail', async mail => {
+        console.log('\n\n---- Mail event fired! ----\n\n')
         try {
             const users = await getAllAuthorizedUsers()
             if (mail.subject.includes('UA')/*  && mail.from.value.address == 'notification@transporeon.com' */)
             users.forEach(async user => {
                 const isSubscribed = await checkSub(user.id)
+                console.log('\n\n---- Is subscribed ----\n\n', isSubscribed)
                 if (isSubscribed){
-                    bot.sendMessage(user, new TextMessage(`${mail.subject}\n\n${mail.text}`, ...useKeyboard(NO_KEYBOARD)))
+                    console.log('\n\n---- Sending message... ----\n\n')
+                    await bot.sendMessage(user, new TextMessage(`${mail.subject}\n\n${mail.text}`, ...useKeyboard(NO_KEYBOARD)))
                     console.log('\n\n---- Mail sent! ----\n\n')
                 }
             })
