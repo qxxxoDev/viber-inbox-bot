@@ -100,16 +100,25 @@ const useBotLogic = bot => {
             const users = await getAllAuthorizedUsers()
             if (mail.subject.includes('UA')/*  && mail.from.value.address == 'notification@transporeon.com' */)
             users.forEach(user => {
-                if (checkSub(user.id)){
+                const isSubscribed = await checkSub(user.id)
+                if (isSubscribed){
                     bot.sendMessage(user, new TextMessage(`${mail.subject}\n\n${mail.text}`, ...useKeyboard(NO_KEYBOARD)))
                 }
             })
         } catch (e) {}
     })
 
-    bot.onSubscribe(res => onSubscribe(res))
+    bot.onSubscribe(res => async (msg, res) => {
+        try {
+            await onSubscribe(res)
+        } catch (e) {}
+    })
 
-    bot.onTextMessage(/^START$/, (msg, res) => onSubscribe(res))
+    bot.onTextMessage(/^START$/, async (msg, res) => {
+        try {
+            await onSubscribe(res)
+        } catch (e) {}
+    })
 
     bot.onUnsubscribe(async uid => {
         try {

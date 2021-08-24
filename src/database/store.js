@@ -54,10 +54,16 @@ const getAuthorizedIds = async () => {
     return ids
 }
 
-const get = async (uid, key) => await (await User.findOne({where: {uid}}))?.getDataValue(key)
+const get = async (uid, key) => {
+    try {
+        return await (await User.findOne({where: {uid}}))?.getDataValue(key)
+    } catch (e) {}
+}
 
 const getUser = async uid => {
-    return JSON.parse(await get(uid, 'profile') || '{"fail":true}')
+    try {
+        return JSON.parse(await get(uid, 'profile') || '{"fail":true}')
+    } catch (e) {}
 }
 
 const getAllAuthorizedUsers = async () => {
@@ -92,13 +98,15 @@ const checkSub = async uid => {
 
 const setUser = async profile => {
     const data = { uid: profile.id, profile: JSON.stringify(profile) }
-    const user = await getUser(profile.id)
+    try {
+        const user = await getUser(profile.id)
     
-    if (user.fail){
-        await User.create(data)
-    } else {
-        await User.update(data, {where: {uid: profile.id}})
-    }
+        if (user.fail){
+            await User.create(data)
+        } else {
+            await User.update(data, {where: {uid: profile.id}})
+        }
+    } catch (e) {}
 }
 
 module.exports = { User, AuthorizedId, getAllAuthorizedUsers, checkSub, setUser, subscribe, getAuthorizedIds }
