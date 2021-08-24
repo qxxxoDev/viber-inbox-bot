@@ -44,7 +44,7 @@ const connectToMailServer = () => {
     })
 
     imap.once('end', function() {
-        console.log('Imap connection ended.\nReconnectiong...');
+        console.log('Imap connection ended.\nReconnectiong...\n');
         connectToMailServer()
     })
 
