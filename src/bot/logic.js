@@ -86,7 +86,7 @@ const useBotLogic = bot => {
             }
 
             await setUser(userProfile)
-            
+            console.log(isSubscribed)
             if (!isSubscribed){
                 const START_MESSAGE = new TextMessage(`Hi, ${userProfile.name}!\nNice to meet you!`, ...useKeyboard(START_KEYBOARD))
                 bot.sendMessage(userProfile, START_MESSAGE)
