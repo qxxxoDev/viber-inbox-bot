@@ -1,6 +1,6 @@
 const Imap = require('imap')
 
-const createImap = ({ user, password, host }) => {
+const createImap = ({ user, password, host }) => {    
     return new Imap({
         user,
         password,
@@ -9,8 +9,11 @@ const createImap = ({ user, password, host }) => {
         tls: true,
         tlsOptions: {
             rejectUnauthorized: false
-        }
+        },
+        debug: console.log
     })
 }
+
+
 
 module.exports = { createImap }

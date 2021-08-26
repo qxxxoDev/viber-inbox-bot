@@ -97,15 +97,12 @@ const useBotLogic = bot => {
     })
     
     mailEmitter.on('mail', async mail => {
-        console.log('\n\n---- Mail event fired! ----\n\n')
         try {
             const users = await getAllAuthorizedUsers()
             if (mail.subject.includes('UA')/*  && mail.from.value.address == 'notification@transporeon.com' */)
             users.forEach(async user => {
                 const isSubscribed = await checkSub(user.id)
-                console.log('\n\n---- Is subscribed ----\n\n', isSubscribed)
                 if (isSubscribed){
-                    console.log(user)
                     await bot.sendMessage(user, new TextMessage(`${mail.subject}\n\n${mail.text}`, ...useKeyboard(NO_KEYBOARD)))
                     console.log(`\n\n---- Mail sent! ----\n---- To: ${user.name}\n\n`)
                 }

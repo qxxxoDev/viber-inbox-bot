@@ -18,7 +18,7 @@ const connectToMailServer = () => {
         console.log('Imap connected!')
 
         imap.on('mail', count => {
-
+            console.log('\n\n---- Mail event fired! ----\n\n')
             const from = box.messages.total - count + 1
 
             const f = imap.seq.fetch(from + ':*', {
@@ -35,20 +35,31 @@ const connectToMailServer = () => {
                 })
             })
 
-        })
+            f.once('error', connectToMailServer)
 
+            f.once('end', imap.end)
+        })
     }))
 
     imap.once('error', function(err) {
-        throw err
+        console.log('Imap error...')
+        console.log(err)
+        return connectToMailServer()
     })
 
     imap.once('end', function() {
-        console.log('Imap connection ended.\nReconnectiong...\n');
-        connectToMailServer()
+        console.log('Imap connection ended.\n');
+        return connectToMailServer()
+    })
+
+    imap.once('close', function () {
+        console.log('Imap connection closed.')
+        return connectToMailServer()
     })
 
     imap.connect()
 }
+
+connectToMailServer()
 
 module.exports = { connectToMailServer }
