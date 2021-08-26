@@ -37,7 +37,6 @@ const connectToMailServer = () => {
 
             f.once('error', connectToMailServer)
 
-            f.once('end', imap.end)
         })
     }))
 
@@ -59,7 +58,5 @@ const connectToMailServer = () => {
 
     imap.connect()
 }
-
-connectToMailServer()
 
 module.exports = { connectToMailServer }
