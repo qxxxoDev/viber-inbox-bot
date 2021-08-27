@@ -10,7 +10,7 @@ const createServer = (bot, WEBHOOK_URL) => {
     app.use('/viber/webhook', bot.middleware())
 
     app.get('/', (req, res) => {
-        res.send('<h1>This is a server for Viber Inbox Bot made by</h1>')
+        res.send('<p>This is a server for Viber Inbox Bot made by</p><a href="mailto:tigranzalian595@gmail.com">Tigran Zalian</a>')
         console.log('Keeping alive...')
     })
 
