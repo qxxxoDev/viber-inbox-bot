@@ -3,9 +3,18 @@ const { emitMailReceivedEvent } = require('../events/mail.js')
 const { createImap } = require('./imap.js')
 const { EMAIL, PASSWORD, IMAP_HOST } = require('../config.js')
 
+let imap
+
+const reconnect = () => {
+    if (imap) {
+        delete imap._events
+        imap = undefined
+    }
+    connectToMailServer()
+}
 
 const connectToMailServer = () => {
-    const imap = createImap({
+    imap = createImap({
         user: EMAIL,
         password: PASSWORD,
         host: IMAP_HOST
@@ -41,19 +50,19 @@ const connectToMailServer = () => {
     }))
 
     imap.once('error', function(err) {
-        console.log('Imap error...')
+        console.log('\nImap error...\n')
         console.log(err)
-        return connectToMailServer()
+        reconnect()
     })
 
     imap.once('end', function() {
-        console.log('Imap connection ended.\n');
-        return connectToMailServer()
+        console.log('\nImap connection ended.\n');
+        reconnect()
     })
 
     imap.once('close', function () {
-        console.log('Imap connection closed.')
-        return connectToMailServer()
+        console.log('\nImap connection closed.\n')
+        reconnect()
     })
 
     imap.connect()
